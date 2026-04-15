@@ -1,0 +1,5 @@
+/*
+  Placeholder file.
+  Replace this with your real custom Prebid.js build.
+  The test page references this path so the project structure is complete.
+*/

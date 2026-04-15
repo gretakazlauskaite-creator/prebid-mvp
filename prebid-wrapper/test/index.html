@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Setupad Prebid Wrapper Test</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 24px;
+      }
+      .slot-wrap {
+        margin-bottom: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Setupad Wrapper Test</h1>
+
+    <div class="slot-wrap">
+      <div id="setupad-slot-1"></div>
+    </div>
+
+    <script src="../dist/prebid.custom.js"></script>
+    <script src="../src/wrapper.js"></script>
+    <script src="../src/config.example.js"></script>
+    <script>
+      SetupadWrapper.init(window.SETUPAD_WRAPPER_EXAMPLE);
+    </script>
+  </body>
+</html>
