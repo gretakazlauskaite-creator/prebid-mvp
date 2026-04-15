@@ -15,17 +15,85 @@
     </style>
   </head>
   <body>
-    <h1>Setupad Wrapper Test</h1>
+  <h1>Prebid Generator</h1>
 
-    <div class="slot-wrap">
-      <div id="setupad-slot-1"></div>
-    </div>
+  <div>
+    <h3>Basic</h3>
+    <input id="containerId" placeholder="containerId" value="setupad-slot-1" />
+    <input id="width" placeholder="width" value="300" />
+    <input id="height" placeholder="height" value="250" />
+  </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/prebid.js@9.42.0/dist/not-for-prod/prebid.js"></script>
-    <script src="../src/wrapper.js"></script>
-    <script src="../src/config.example.js"></script>
-    <script>
-      SetupadWrapper.init(window.SETUPAD_WRAPPER_EXAMPLE);
-    </script>
-  </body>
+  <div>
+    <h3>Adform</h3>
+    <input id="adform_mid" placeholder="MID" />
+  </div>
+
+  <div>
+    <h3>OpenX</h3>
+    <input id="openx_unit" placeholder="unit" />
+    <input id="openx_domain" placeholder="delDomain" value="setupad-d.openx.net" />
+  </div>
+
+  <button onclick="generate()">Generate</button>
+
+  <h3>Result</h3>
+  <pre id="output"></pre>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/prebid.js@9.42.0/dist/not-for-prod/prebid.js"></script>
+  <script src="/wrapper.js"></script>
+
+  <script>
+    function generate() {
+      const containerId = document.getElementById('containerId').value
+      const width = document.getElementById('width').value
+      const height = document.getElementById('height').value
+
+      const adformMid = document.getElementById('adform_mid').value
+      const openxUnit = document.getElementById('openx_unit').value
+      const openxDomain = document.getElementById('openx_domain').value
+
+      const bidders = []
+
+      if (adformMid) {
+        bidders.push({
+          bidder: 'adform',
+          params: { mid: adformMid }
+        })
+      }
+
+      if (openxUnit) {
+        bidders.push({
+          bidder: 'openx',
+          params: {
+            unit: openxUnit,
+            delDomain: openxDomain
+          }
+        })
+      }
+
+      const config = {
+        containerId,
+        width: Number(width),
+        height: Number(height),
+        timeout: 3500,
+        currency: 'EUR',
+        bidders
+      }
+
+      const code = `
+<div id="${containerId}"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/prebid.js@9.42.0/dist/not-for-prod/prebid.js"></script>
+<script src="https://tavo-domenas.lt/wrapper.js"></script>
+<script>
+SetupadWrapper.init(${JSON.stringify(config, null, 2)});
+<\/script>
+`
+
+      document.getElementById('output').textContent = code
+    }
+  </script>
+</body>
 </html>
