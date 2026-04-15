@@ -1,99 +1,395 @@
 <!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Setupad Prebid Wrapper Test</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      body {
-        font-family: Arial, sans-serif;
-        padding: 24px;
-      }
-      .slot-wrap {
-        margin-bottom: 24px;
-      }
-    </style>
-  </head>
-  <body>
-  <h1>Prebid Generator</h1>
+<html lang="lt">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prebid Script Generator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 32px;
+      background: #f3f4f6;
+      color: #111827;
+    }
 
-  <div>
-    <h3>Basic</h3>
-    <input id="containerId" placeholder="containerId" value="setupad-slot-1" />
-    <input id="width" placeholder="width" value="300" />
-    <input id="height" placeholder="height" value="250" />
+    h1 {
+      margin-top: 0;
+      font-size: 48px;
+    }
+
+    h2 {
+      margin-top: 32px;
+      font-size: 28px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(240px, 1fr));
+      gap: 12px;
+      max-width: 1000px;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 16px;
+      border: 1px solid #9ca3af;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 16px;
+      max-width: 1000px;
+    }
+
+    .ssp-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+
+    .ssp-row label {
+      font-weight: 400;
+      margin-bottom: 0;
+    }
+
+    button {
+      padding: 12px 18px;
+      font-size: 16px;
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+      background: #2563eb;
+      color: white;
+      margin-top: 16px;
+      margin-right: 10px;
+    }
+
+    button.secondary {
+      background: #4b5563;
+    }
+
+    pre {
+      background: #111827;
+      color: #f9fafb;
+      padding: 16px;
+      border-radius: 10px;
+      overflow: auto;
+      white-space: pre-wrap;
+      word-break: break-word;
+      min-height: 80px;
+    }
+
+    .muted {
+      color: #6b7280;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Prebid Script Generator</h1>
+  <p class="muted">
+    Šitas puslapis negeneruoja reklamos preview. Jis sugeneruoja wrapper config ir pilną embed kodą, kurį galima copy-paste naudoti konkrečiam webui.
+  </p>
+
+  <div class="card">
+    <h2>Basic</h2>
+    <div class="grid">
+      <div>
+        <label for="domain">Domenas</label>
+        <input id="domain" value="buvis.lt" />
+      </div>
+
+      <div>
+        <label for="containerId">Container ID</label>
+        <input id="containerId" value="setupad-slot-1" />
+      </div>
+
+      <div>
+        <label for="adUnitCode">Ad Unit Code</label>
+        <input id="adUnitCode" value="buvis_lt_300x250_article_left_1" />
+      </div>
+
+      <div>
+        <label for="currency">Currency</label>
+        <input id="currency" value="EUR" />
+      </div>
+
+      <div>
+        <label for="width">Width</label>
+        <input id="width" value="300" />
+      </div>
+
+      <div>
+        <label for="height">Height</label>
+        <input id="height" value="250" />
+      </div>
+
+      <div>
+        <label for="timeout">Timeout</label>
+        <input id="timeout" value="3500" />
+      </div>
+
+      <div>
+        <label for="wrapperUrl">Wrapper URL</label>
+        <input id="wrapperUrl" value="https://cdn.setupad.lt/wrapper.js" />
+      </div>
+
+      <div class="full">
+        <label for="prebidUrl">Prebid URL</label>
+        <input id="prebidUrl" value="https://cdn.setupad.lt/prebid.custom.js" />
+      </div>
+    </div>
   </div>
 
-  <div>
-    <h3>Adform</h3>
-    <input id="adform_mid" placeholder="MID" />
+  <div class="card">
+    <h2>SSP pasirinkimas</h2>
+    <div class="ssp-row">
+      <label><input type="checkbox" id="useAdform" checked /> Adform</label>
+      <label><input type="checkbox" id="useOpenx" checked /> OpenX</label>
+      <label><input type="checkbox" id="useEquativ" /> Equativ / Smart</label>
+      <label><input type="checkbox" id="useRtbhouse" /> RTB House</label>
+      <label><input type="checkbox" id="useLupon" /> Lupon Media</label>
+      <label><input type="checkbox" id="useAdaptmx" /> AdaptMX</label>
+    </div>
   </div>
 
-  <div>
-    <h3>OpenX</h3>
-    <input id="openx_unit" placeholder="unit" />
-    <input id="openx_domain" placeholder="delDomain" value="setupad-d.openx.net" />
+  <div class="card">
+    <h2>Adform</h2>
+    <div class="grid">
+      <div>
+        <label for="adform_mid">MID</label>
+        <input id="adform_mid" value="2147923" />
+      </div>
+    </div>
   </div>
 
-  <button onclick="generate()">Generate</button>
+  <div class="card">
+    <h2>OpenX</h2>
+    <div class="grid">
+      <div>
+        <label for="openx_unit">Unit</label>
+        <input id="openx_unit" value="560637352" />
+      </div>
 
-  <h3>Result</h3>
-  <pre id="output"></pre>
+      <div>
+        <label for="openx_domain">delDomain</label>
+        <input id="openx_domain" value="setupad-d.openx.net" />
+      </div>
+    </div>
+  </div>
 
-  <!-- SCRIPTS -->
-  <script src="https://cdn.jsdelivr.net/npm/prebid.js@9.42.0/dist/not-for-prod/prebid.js"></script>
-  <script src="/wrapper.js"></script>
+  <div class="card">
+    <h2>Equativ / Smart</h2>
+    <div class="grid">
+      <div>
+        <label for="equativ_domain">Domain</label>
+        <input id="equativ_domain" value="prg.smartadserver.com" />
+      </div>
+
+      <div>
+        <label for="equativ_siteId">siteId</label>
+        <input id="equativ_siteId" value="644690" />
+      </div>
+
+      <div>
+        <label for="equativ_pageId">pageId</label>
+        <input id="equativ_pageId" value="1947881" />
+      </div>
+
+      <div>
+        <label for="equativ_formatId">formatId</label>
+        <input id="equativ_formatId" value="84779" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>RTB House</h2>
+    <div class="grid">
+      <div>
+        <label for="rtb_region">Region</label>
+        <input id="rtb_region" value="prebid-eu" />
+      </div>
+
+      <div>
+        <label for="rtb_publisherId">Publisher ID</label>
+        <input id="rtb_publisherId" value="" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Lupon Media</h2>
+    <div class="grid">
+      <div>
+        <label for="lupon_siteId">siteId</label>
+        <input id="lupon_siteId" value="" />
+      </div>
+
+      <div>
+        <label for="lupon_keyId">keyId</label>
+        <input id="lupon_keyId" value="" />
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>AdaptMX</h2>
+    <div class="grid">
+      <div>
+        <label for="adaptmx_tagId">tagId</label>
+        <input id="adaptmx_tagId" value="" />
+      </div>
+    </div>
+  </div>
+
+  <button onclick="generateCode()">Generate</button>
+  <button class="secondary" onclick="copyOutput('embedOutput')">Copy embed</button>
+
+  <div class="card">
+    <h2>Bidders config</h2>
+    <pre id="biddersOutput"></pre>
+  </div>
+
+  <div class="card">
+    <h2>Init kodas</h2>
+    <pre id="initOutput"></pre>
+  </div>
+
+  <div class="card">
+    <h2>Pilnas embed kodas</h2>
+    <pre id="embedOutput"></pre>
+  </div>
 
   <script>
-    function generate() {
-      const containerId = document.getElementById('containerId').value
-      const width = document.getElementById('width').value
-      const height = document.getElementById('height').value
+    function val(id) {
+      return document.getElementById(id).value.trim();
+    }
 
-      const adformMid = document.getElementById('adform_mid').value
-      const openxUnit = document.getElementById('openx_unit').value
-      const openxDomain = document.getElementById('openx_domain').value
+    function checked(id) {
+      return document.getElementById(id).checked;
+    }
 
-      const bidders = []
+    function generateCode() {
+      const bidders = [];
 
-      if (adformMid) {
+      if (checked('useAdform') && val('adform_mid')) {
         bidders.push({
           bidder: 'adform',
-          params: { mid: adformMid }
-        })
+          params: {
+            mid: val('adform_mid')
+          }
+        });
       }
 
-      if (openxUnit) {
+      if (checked('useOpenx') && val('openx_unit')) {
         bidders.push({
           bidder: 'openx',
           params: {
-            unit: openxUnit,
-            delDomain: openxDomain
+            unit: val('openx_unit'),
+            delDomain: val('openx_domain')
           }
-        })
+        });
+      }
+
+      if (
+        checked('useEquativ') &&
+        val('equativ_domain') &&
+        val('equativ_siteId') &&
+        val('equativ_pageId') &&
+        val('equativ_formatId')
+      ) {
+        bidders.push({
+          bidder: 'smartadserver',
+          params: {
+            domain: val('equativ_domain'),
+            siteId: Number(val('equativ_siteId')),
+            pageId: Number(val('equativ_pageId')),
+            formatId: Number(val('equativ_formatId'))
+          }
+        });
+      }
+
+      if (checked('useRtbhouse') && val('rtb_publisherId')) {
+        bidders.push({
+          bidder: 'rtbhouse',
+          params: {
+            region: val('rtb_region'),
+            publisherId: val('rtb_publisherId')
+          }
+        });
+      }
+
+      if (checked('useLupon') && val('lupon_siteId') && val('lupon_keyId')) {
+        bidders.push({
+          bidder: 'luponmedia',
+          params: {
+            siteId: val('lupon_siteId'),
+            keyId: val('lupon_keyId')
+          }
+        });
+      }
+
+      if (checked('useAdaptmx') && val('adaptmx_tagId')) {
+        bidders.push({
+          bidder: 'adaptmx',
+          params: {
+            tagId: val('adaptmx_tagId')
+          }
+        });
       }
 
       const config = {
-        containerId,
-        width: Number(width),
-        height: Number(height),
-        timeout: 3500,
-        currency: 'EUR',
+        containerId: val('containerId'),
+        adUnitCode: val('adUnitCode'),
+        width: Number(val('width')),
+        height: Number(val('height')),
+        timeout: Number(val('timeout')),
+        currency: val('currency'),
+        debug: true,
         bidders
-      }
+      };
 
-      const code = `
-<div id="${containerId}"></div>
+      const initCode = `SetupadWrapper.init(${JSON.stringify(config, null, 2)});`;
 
-<script src="https://cdn.jsdelivr.net/npm/prebid.js@9.42.0/dist/not-for-prod/prebid.js"></script>
-<script src="https://tavo-domenas.lt/wrapper.js"></script>
+      const embedCode = `<div id="${config.containerId}"></div>
+
+<script src="${val('prebidUrl')}"></script>
+<script src="${val('wrapperUrl')}"></script>
 <script>
-SetupadWrapper.init(${JSON.stringify(config, null, 2)});
-<\/script>
-`
+${initCode}
+<\/script>`;
 
-      document.getElementById('output').textContent = code
+      document.getElementById('biddersOutput').textContent = JSON.stringify(bidders, null, 2);
+      document.getElementById('initOutput').textContent = initCode;
+      document.getElementById('embedOutput').textContent = embedCode;
     }
+
+    async function copyOutput(id) {
+      const text = document.getElementById(id).textContent;
+      await navigator.clipboard.writeText(text);
+      alert('Nukopijuota');
+    }
+
+    generateCode();
   </script>
 </body>
 </html>
